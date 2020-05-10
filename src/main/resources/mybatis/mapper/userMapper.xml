@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.UserMapper">
+
+	<!-- public int login(User user); -->
+	<select id="login" parameterType="com.guet.graduation.cfq.entity.User" resultType="String">
+		select userId from tb_user where login=#{login} and password=#{password}
+	</select>
+	
+	<!-- public User test(int userId); -->
+	<select id="test" resultType="com.guet.graduation.cfq.entity.User" parameterType="int">
+		select * from tb_user where userId=#{userId}
+	</select>
+	
+	<!-- public void inserUser(User user); -->
+	<insert id="inserUser" parameterType="com.guet.graduation.cfq.entity.User">
+		insert into tb_user (userId,roleId,login,password)
+		values(#{userId},#{roleId},#{login},#{password})
+	</insert>
+
+	<!-- public int getRoleId(String userId); -->
+	<select id="getRoleId" parameterType="String" resultType="int">
+		select roleId from tb_user where userId=#{_parameter};
+	</select>
+	
+	<!-- public Collection<RoleFunction> getFunctions(int roleId); -->
+	<select id="getFunctions" parameterType="int" resultType="com.guet.graduation.cfq.entity.RoleFunction">
+		select * FROM tb_function where roleId=#{roleId};
+	</select>
+	
+	<!-- public String getUserNameById(String userId); -->
+	<select id="getUserNameById" parameterType="String" resultType="String">
+		select login from tb_user where userId=#{userId}
+	</select>
+	
+	<!-- public User getUser(String userId); -->
+	<select id="getUser" parameterType="String" resultType="com.guet.graduation.cfq.entity.User">
+		select * from tb_user where userId=#{userId}
+	</select>
+	
+	<!-- public void updateUser(User user); -->
+	<update id="updateUser" parameterType="com.guet.graduation.cfq.entity.User">
+		update tb_user
+		set 
+		sex=#{sex}, birthday=#{birthday}
+		where userId=#{userId}
+	</update>
+	
+	<!-- public void updatePassword(User user); -->
+	<update id="updatePassword" parameterType="com.guet.graduation.cfq.entity.User">
+		update tb_user
+		set 
+		password=#{password}
+		where userId=#{userId}
+	</update>
+	
+</mapper>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>欢迎页面-X-admin2.0</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/xadmin.css">
+		<link rel="stylesheet" href="/lib/layui/css/layui.css" media="all">
+		<script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="/js/xadmin.js"></script>
+		<script src="/bootstrap/js/jquery.min.js"></script>
+		
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		<div class="x-body" >
+			
+				  <div class="layui-collapse" lay-filter="test">
+					  <div class="layui-colla-item" th:each="message:${messages}" >
+						    <!-- <h2 class="layui-colla-title" th:text="${message.message_title}" name="title">
+						    </h2> -->
+						    <lable th:text="${message.message_id}" style="display:none"></lable>
+						    <div class="layui-colla-title">
+						    	<h2>[[${message.message_title}]] <div th:style="${message.status == '未读'} ? 'color:red; float:right;': 'float:right'">[ [[${message.status}]] ]</div></h2>
+						    </div>
+						    <div class="layui-colla-content">
+						    	<div class="row">
+									<div class="col-lg-2 col-md-2 col-sm-3 col-xs-6 mb">
+										<div class="content-panel pn " style="height:auto">
+											<div id="profile-02">
+												<p th:text="${message.message_content}" name="content"></p>
+											</div>
+											<div>
+												 <br/><br/>
+											     <textarea placeholder="回复内容" class="layui-textarea" name="content"></textarea>
+											     <button class="layui-btn"  onclick="reply(this)">回复</button>
+											     <!-- <input type="submit" value="回复"> -->
+											     <label style="display:none" th:text="${message.message_id}" name="messageId"></label>
+											</div>
+										</div>
+									</div>
+								</div>
+						    </div>
+					  </div>
+				 </div>
+			
+		</div>
+		
+	<script>
+	layui.use(['element', 'layer'], function(){
+	  var element = layui.element;
+	  var layer = layui.layer;
+	  
+	  layui.use(['element', 'layer'], function(){
+		  var element = layui.element;
+		  var layer = layui.layer;
+		  
+		  //监听折叠
+		  element.on('collapse(test)', function(data){
+		    /* layer.msg('展开状态：'+ data.title[0].innerHTML); */ 
+		    //当展开状态为true的时候，将当前的消息状态标记为“已读”
+		    //前端状态修改
+		    /* layer.msg("状态为："+data.title[0].childNodes[1].childNodes[1].innerHTML); */
+		    data.title[0].childNodes[1].childNodes[1].innerHTML="[ 已读 ]";
+		    data.title[0].childNodes[1].childNodes[1].style="color:black; float:right;";
+		    //发AJAX请求修改后端状态
+		    /* layer.msg("消息编号为："+data.title[0].previousElementSibling.innerHTML); */
+		    var messageId={"messageId":data.title[0].previousElementSibling.innerHTML};
+		    messageId=JSON.stringify(messageId);
+		    $.ajax({
+	    	    type:"post",
+	    	    url:"updateMsgStatus",
+	    	    data:messageId,
+	    	    contentType: "application/json;charset=utf-8",
+	    	    success:function(data){
+	                /* layer.msg(data,{icon:1,time:1500}); */
+	    	    },
+	    	    error:function(){
+	    	    	/* layer.msg("出现错误"); */
+	    	    }
+	    	}); 
+		  }); 
+		});
+	});
+	</script>
+	
+	<script>
+		function reply(obj){
+			/* console.log("得到的值为："+$(obj).parents().innerHTML); */
+			//获取消息ID
+			var msgId=$(obj).context.nextElementSibling.innerHTML;
+			//获取回复内容
+			var msgContent= $(obj).context.previousElementSibling.value;
+			var jsonData={"msgId":msgId, "msgContent":msgContent};
+			jsonData=JSON.stringify(jsonData)
+			/* layer.msg("消息ID为："+msgId+"  "+msgContent); */
+			$.ajax({
+	    	    type:"post",
+	    	    url:"replyMessage",
+	    	    data: jsonData,
+	    	    contentType: "application/json;charset=utf-8",
+	    	    success:function(data){
+	                layer.msg(data,{icon:1,time:1500});
+	    	    },
+	    	    error:function(){
+	    	    	layer.msg("出现错误,请稍后重试");
+	    	    }
+	    	}); 
+		}
+	</script>
+		
+	</body>
+
+</html>

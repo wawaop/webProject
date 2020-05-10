@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.MessageMapper">
+
+	<!-- public void insertMessage(Message message); -->
+	<insert id="insertMessage" parameterType="com.guet.graduation.cfq.entity.Message">
+		INSERT INTO message(message_id, send_userId, receive_userId, send_time, message_title, message_content, `status`)
+		VALUES (#{message_id}, #{send_userId}, #{receive_userId}, #{send_time}, #{message_title}, #{message_content},#{status})
+	</insert>
+	
+	<!-- public List<Message> getAllMessage(String userId); -->
+	<select id="getAllMessage" resultType="com.guet.graduation.cfq.entity.Message" parameterType="String">	
+		select * from message 
+		WHERE receive_userId=#{userId}
+		ORDER BY `status`  DESC
+	</select>
+	
+	<!-- public void updateMsgStatus(String msgId); -->
+	<update id="updateMsgStatus" parameterType="String">
+		UPDATE message 
+		SET `status`="已读"
+		WHERE message_id=#{msgId}
+	</update>
+	
+	<!-- public Message getMessageById(String msgId); -->
+	<select id="getMessageById" resultType="com.guet.graduation.cfq.entity.Message" parameterType="String">		
+		SELECT * FROM message
+		WHERE message_id=#{msgId}
+	</select>
+	
+</mapper>

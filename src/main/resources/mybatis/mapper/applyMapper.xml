@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.ApplyMapper">
+	
+	<!-- public List<PublishApply> getPublishApply(); -->
+	<select id="getPublishApply" resultType="com.guet.graduation.cfq.entity.PublishApply">
+		select * from publish_apply where applystatus="申请中"
+	</select>
+	
+	<!-- public PublishApply getPublishApplyById(String applyId); -->
+	<select id="getPublishApplyById" parameterType="String" resultType="com.guet.graduation.cfq.entity.PublishApply">
+		select * from publish_apply where publishId=#{applyId}
+	</select>
+	
+	<!-- public void passApply(String applyId); -->
+	<update id="passApply" parameterType="String">
+		update publish_apply
+		set applystatus="已通过"
+		where publishId=#{applyId}
+	</update>
+	
+	<!-- public String getEquipmentIdById(String applyId); -->
+	<select id="getEquipmentIdById" parameterType="String" resultType="String">
+		select equipmentId from publish_apply where publishId=#{applyId}
+	</select>
+	
+	<!-- public void unPassApply(String unPassId); -->
+	<update id="unPassApply" parameterType="String">
+		update publish_apply
+		set applystatus="不通过"
+		where publishId=#{unPassId}
+	</update>
+	
+	<!-- public List<PublishApply> getMyPublishApply(String userId); -->
+	<select id="getMyPublishApply" parameterType="String" resultType="com.guet.graduation.cfq.entity.PublishApply">
+		SELECT publish_apply.publishId, equipment.equipmentName, equipment.type, equipment.price, publish_apply.applyTime, publish_apply.applystatus
+		FROM publish_apply, equipment
+		WHERE publish_apply.equipmentId=equipment.equipmentId AND publish_apply.userId=#{userId}
+		ORDER BY applyTime DESC
+	</select>
+	
+	<!-- public List<PublishApply> getApplying(String userId); -->
+	<select id="getApplying" parameterType="String" resultType="com.guet.graduation.cfq.entity.PublishApply">
+		SELECT publish_apply.publishId, equipment.equipmentName, equipment.type, equipment.price, publish_apply.applyTime, publish_apply.applystatus
+		FROM publish_apply, equipment
+		WHERE publish_apply.equipmentId=equipment.equipmentId AND publish_apply.userId=#{userId} AND applystatus="申请中"
+		ORDER BY applyTime DESC
+	</select>
+	
+	<!-- public List<PublishApply> getPassApply(String userId); -->
+	<select id="getPassApply" parameterType="String" resultType="com.guet.graduation.cfq.entity.PublishApply">
+		SELECT publish_apply.publishId, equipment.equipmentName, equipment.type, equipment.price, publish_apply.applyTime, publish_apply.applystatus
+		FROM publish_apply, equipment
+		WHERE publish_apply.equipmentId=equipment.equipmentId AND publish_apply.userId=#{userId} AND applystatus="已通过"
+		ORDER BY applyTime DESC
+	</select>
+	
+	<!-- public List<PublishApply> getUnPassApply(String userId); -->
+	<select id="getUnPassApply" parameterType="String" resultType="com.guet.graduation.cfq.entity.PublishApply">
+		SELECT publish_apply.publishId, equipment.equipmentName, equipment.type, equipment.price, publish_apply.applyTime, publish_apply.applystatus
+		FROM publish_apply, equipment
+		WHERE publish_apply.equipmentId=equipment.equipmentId AND publish_apply.userId=#{userId} AND applystatus="不通过"
+		ORDER BY applyTime DESC
+	</select>
+	
+	<!-- public void deleteApply(String equipmentId); -->
+	<delete id="deleteApply" parameterType="String">
+		DELETE FROM publish_apply WHERE publish_apply.equipmentId=#{equipmentId}
+	</delete>
+	
+</mapper>

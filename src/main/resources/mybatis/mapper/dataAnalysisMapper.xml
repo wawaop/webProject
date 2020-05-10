@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.DataAnalysisMapper">
+	
+	<!-- public List<EquipmentUseTimes> getEquipmentUseTimes(DateAndUserId dateAndUserId); -->
+	<select id="getEquipmentUseTimes" resultType="com.guet.graduation.cfq.entity.EquipmentUseTimes" parameterType="com.guet.graduation.cfq.entity.DateAndUserId">
+		select equipment.equipmentName,cast(SUM(orders.price)/equipment.price AS signed) useTimes,DATE_FORMAT(orders.useTime,"%Y-%m-%d") useDate
+		from equipment,orders 
+		where equipment.equipmentId=orders.equipment_id and orders.order_status="已付款" and orders.useTime BETWEEN #{startDate} and #{endDate} and equipment.userId=#{userId}
+		GROUP BY orders.equipment_id, orders.useTime
+		ORDER BY equipmentId,orders.useTime;
+	</select>
+	
+	<!-- public List<ExcelFee> getFee(DateAndUserId dateAndUserId); -->
+	<select id="getFee" resultType="com.guet.graduation.cfq.entity.ExcelFee" parameterType="com.guet.graduation.cfq.entity.DateAndUserId">
+		select equipment.equipmentName,SUM(orders.price) price
+		from equipment,orders 
+		where orders.equipment_id=equipment.equipmentId and orders.order_status="已付款" and orders.useTime BETWEEN #{startDate} and #{endDate} and equipment.userId=#{userId}
+		GROUP BY orders.equipment_id
+		ORDER BY equipmentId
+	</select>
+	
+</mapper>

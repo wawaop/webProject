@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>欢迎页面-X-admin2.0</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/xadmin.css">
+		<link rel="stylesheet" href="/lib/layui/css/layui.css" media="all">
+		<script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="/js/xadmin.js"></script>
+		<!-- JQuery的省市区三联动插件 -->
+		<script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+		<script src="/js/distpicker.data.js"></script>
+		<script src="/js/distpicker.js"></script>
+		<script src="/js/main.js"></script>
+		<!-- 图片显示的js -->
+	    <script src="/js/masonry.pkgd.min.js"></script>
+	    <script src="/js/imagesloaded.js"></script>
+	    <script src="/js/classie.js"></script>
+	    <script src="/js/AnimOnScroll.js"></script>
+	    <script src="/js/modernizr.custom.js"></script>
+	    <script src="http://www.jq22.com/js/jq.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		<div class="x-body">
+			<form class="layui-form">
+				<!-- 设备编号 -->
+				<div class="layui-form-item">
+					<label for="equipmentId" class="layui-form-label"> 
+						设备/空间编号
+					</label>
+					<div class="layui-input-inline">
+						<!-- <label class="layui-form-label" style="width:auto;" th:text="${oldEquipment.equipmentId}" id="positionProvinceInfo"></label> -->
+						<input type="text" id="equipmentId" name="equipmentId" autocomplete="off" class="layui-input" th:value="${oldEquipment.equipmentId}" disabled="">
+					</div>
+					<!-- 设备名 -->
+					<label for="equipmentName" class="layui-form-label"> 
+						设备/空间名
+					</label>
+					<div class="layui-input-inline">
+						<input type="text" id="equipmentName" name="equipmentName" autocomplete="off" class="layui-input" th:value="${oldEquipment.equipmentName}" lay-verify="required">
+						<!-- <label class="layui-form-label" style="width:auto" th:text="${oldEquipment.equipmentName}" id="positionProvinceInfo"></label> -->
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<!-- 设备或空间种类-->
+					<label class="layui-form-label"> 
+						<span class="x-red">*</span>设备/空间类型
+					</label>
+					<div class="layui-input-inline">
+						<select name="type" lay-search="" th:field="${oldEquipment.type}" th:switch="${oldEquipment.type}" lay-verify="required">
+							<option value="">直接选择</option>
+							<option th:selected="${oldEquipment.type=='设备'}" value="设备" >设备</option>
+							<option th:selected="${oldEquipment.type=='会议室'}" value="会议室">会议室</option>
+							<option th:selected="${oldEquipment.type=='工位'}" value="工位">工位</option>
+							<option th:selected="${oldEquipment.type=='报告厅'}" value="报告厅">报告厅</option>
+						</select>
+					</div>
+					<!-- 可容纳人数 -->
+					<label for="equipmentCapacity" class="layui-form-label"> 
+						<span class="x-red">*</span>可容纳人数
+					</label>
+					<div class="layui-input-inline">
+						<input th:value="${oldEquipment.equipmentCapacity}" type="text" id="equipmentCapacity" name="equipmentCapacity" autocomplete="off" class="layui-input" lay-verify="number">
+					</div>
+					<!-- 设备或空间状态-->
+					<label class="layui-form-label"> 
+						<span class="x-red">*</span>设备/空间状态
+					</label>
+					<div class="layui-input-inline">
+						<select name="status" lay-verify="required" th:if="${oldEquipment.equipmentsStatus!='申请中'}">
+							<option th:selected="${oldEquipment.equipmentsStatus=='可使用'}" value="可使用">可使用</option>
+							<option th:selected="${oldEquipment.equipmentsStatus=='维护'}" value="维护" >维护</option>
+							<option th:selected="${oldEquipment.equipmentsStatus=='清洁'}" value="清洁">清洁</option>
+							<option th:selected="${oldEquipment.equipmentsStatus=='休息'}" value="休息">休息</option>
+						</select>
+						<label class="layui-form-label" style="width: auto;" th:text="${oldEquipment.equipmentsStatus}" th:if="${oldEquipment.equipmentsStatus=='申请中'}"></label>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						 <span class="x-red">*</span>设备/空间地址：
+					</label>
+					<div data-toggle="distpicker">
+						<div class="layui-input-inline" style="width: auto;">
+						  <label class="layui-form-label" style="width: auto;" th:text="${oldEquipment.positionProvince + ' 省  ' +oldEquipment.positionCity + ' 市 '+oldEquipment.positionSpecificLocation}" id="positionProvinceInfo"></label>
+						  <!-- <select lay-filter="a" id="a" name="positionProvince" ></select> -->
+						</div>
+						<!-- <div class="layui-input-inline">
+						  <select lay-filter="b" id="b" name="positionCity"></select>
+						</div> -->
+					</div>
+				</div>
+				<!-- 详细的具体位置 -->
+				<!-- <div class="layui-form-item">
+					<label class="layui-form-label">
+						<span class="x-red">*</span>具体位置
+					</label>
+					<div class="layui-input-block" >
+						<input th:value="${oldEquipment.positionSpecificLocation}" type="text" name="positionSpecificLocation" placeholder="请输入详细地址" autocomplete="off" class="layui-input">
+					</div>
+				</div> -->
+				<!-- 设置开放时间 -->
+				<div class="layui-form-item">
+					<label class="layui-form-label">
+						<span class="x-red">*</span>开放时间
+					</label>
+					<div class="layui-input-inline">
+						<input name="openTime" type="text" class="layui-input" id="test9" placeholder=" - " th:value="${oldEquipment.openingTime+' - '+oldEquipment.closeTime}"  lay-verify="required">
+					</div>
+					<!-- 每半小时单价 -->
+					<label for="price" class="layui-form-label"> 
+						<span class="x-red">*</span>价格(/30min)
+					</label>
+					<div class="layui-input-inline">
+						<input th:value="${oldEquipment.price}" type="text" id="price" name="price" autocomplete="off" class="layui-input" lay-verify="number">
+					</div>
+					
+				</div>
+				<!-- 设备具体描述 -->
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">设备/空间描述</label>
+					<div class="layui-input-block">
+						<textarea th:text="${oldEquipment.equipmentDescrip}" name="description" placeholder="请输入内容" class="layui-textarea"></textarea>
+					</div>
+				</div>
+				<!-- 上传多张设备/空间图片 -->
+				<div class="layui-form-item">
+					<div class="layui-upload">
+						<button type="button" class="layui-btn layui-btn-primary" id="test2" style="margin-left: 109px;" >设备/空间图片</button>
+						<!-- <button class="layui-btn" >上传图片</button> -->
+						<button class="layui-btn" lay-submit="" lay-filter="edit" id="edit">更新</button>
+						<blockquote class="layui-elem-quote layui-quote-nm" style="margin-top: 10px;" >
+							<span class="x-red">*</span>预览图：
+							<div class="layui-upload-list" id="demo2"></div>
+						</blockquote>
+						<!-- 图片 -->
+						<br/>
+						<p>设备/空间图片：</p>
+						<ul class="grid effect-1" id="grid" style="margin-top:15px;">
+						<!-- th:each="image : ${applyDetail.equipmentImages}" -->
+							<li style="width:356px;background-color:grey" th:each="image : ${oldEquipmentImage}"> 
+								<lable style="display:none" th:text="${image.image_id}">图片ID</lable>
+								<span style="float:left;font-size:15px;margin-left:150px;" onclick="deleteImage(this)">删除</span>
+								<img th:src="${'http://localhost:8081/OTA/'+image.image_url}" style="width:356px; height:auto;float:left">
+							</li>
+							<!-- <li style="width:356px;background-color:grey"> 
+								<lable style="display:none">图片ID</lable>
+								<span style="float:left;font-size:15px;margin-left:150px;" onclick="deleteImage(this)">删除</span><img src="http://localhost:8081/OTA/15584129799665046fbe788e0d069e458e6e1b67eff6577ad8d08de37-GInzMh_fw658.jpg" style="width:356px; height:auto;float:left">
+							</li> -->
+						</ul>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script>
+			layui.use(['form', 'layer'], function() {
+				$ = layui.jquery;
+				var form = layui.form,
+					layer = layui.layer;
+				
+			var imageUrl="";
+			
+			/* 提交图片 */
+			layui.use('upload',function() {
+				var $ = layui.jquery,upload = layui.upload;
+
+				//多图片上传
+				  upload.render({
+				    elem: '#test2'
+				    ,url: '/addImage'
+				    ,acceptMime: 'image/*'
+				    ,multiple: true
+				    ,before: function(obj){
+				      //预读本地文件示例，不支持ie8
+				      obj.preview(function(index, file, result){
+				       $('#demo2').append('<img src="'+ result +'" alt="'+ file.name +'" id="showImg'+index+'" class="layui-upload-img">');
+				      
+				      });
+				    }
+				    ,done: function(res){
+				      imageUrl=imageUrl+","+res.result;
+				      console.log("得到的结果为："+imageUrl);
+				    }
+				  });
+			});
+			
+				//监听更新
+				form.on('submit(edit)', function(data) {
+					var sendData=JSON.stringify(data.field);
+					sendData.file=imageUrl;
+					console.log("得到的senddata为；"+sendData);
+					console.log("得到的图片为；"+imageUrl);
+					
+					//组合json
+					var resultJSON={"inputDate":sendData,"imageUrl":imageUrl};
+					resultJSON=JSON.stringify(resultJSON);
+					console.log("得到的resultJSON为；"+resultJSON);
+					
+					//异步提交数据
+					$.ajax({
+			        	    type:"post",
+			        	    url:"/updateEquipment",
+			        	    data:resultJSON,
+			        	    contentType: "application/json;charset=utf-8",
+			        	    success:function(data){
+			        	       console.log("异步提交成功,返回值为："+data);
+			        	       layer.alert("更新成功", {
+									icon: 6
+								}, function() {
+									
+									 // 获得frame索引
+									var index = parent.layer.getFrameIndex(window.name);
+									 //刷新父页面的table
+									parent.location.reload();
+									//关闭当前frame
+									parent.layer.close(index); 
+								}); 
+			        	    },
+			        	    error:function(){
+			        	    	layer.alert("更新出现错误");
+			        	    }
+			        	});
+					return false; 
+				});
+
+			});
+		</script>
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		<script type="text/javascript">
+			//时间范围
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				laydate.render({
+					elem: '#test9',
+					type: 'time',
+					range: true
+				});
+			})
+		</script>
+		<!-- 图片样式 -->
+	    <script>
+		
+			new AnimOnScroll( document.getElementById( 'grid' ), {
+		
+				minDuration : 0.4,
+		
+				maxDuration : 0.7,
+		
+				viewportFactor : 0.2
+		
+			} );
+		</script>
+		
+		<script>
+		/* 删除图片 */
+		function deleteImage(obj){
+			layer.confirm('确认要删除图片吗？',function(index){
+				/* 获取图片编号 */
+				var imageId=$(obj).context.previousElementSibling.innerHTML;
+				var imageJson={"imageId":imageId};
+				imageJson=JSON.stringify(imageJson);
+				//发ajax请求向后台删除图片
+				$.ajax({
+	        	    type:"post",
+	        	    url:"/deleteEquipmentImage",
+	        	    data:imageJson,
+	        	    contentType: "application/json;charset=utf-8",
+	        	    success:function(data){
+	        	    	/*界面处理在AJAX返回函数中进行*/
+	    				let $parent = $(obj).parent();
+	    				$parent.remove();
+	    				layer.msg('已删除!',{icon:1,time:1000});
+	        	    },
+	        	    error:function(){
+	        	    	layer.msg('出现错误，请稍后重试!',{icon:1,time:1200});
+	        	    }
+	        	});
+				
+				
+				
+				
+			});
+		}
+		</script>
+	</body>
+
+</html>

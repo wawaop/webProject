@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title>layui</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<!-- <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"> -->
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap-table.css">
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap-table-fixed-columns.css">
+		<script src="/bootstrap/js/jquery.min.js"></script>
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/bootstrap/js/bootstrap-table.js"></script>
+		<script src="/bootstrap/js/bootstrap-table-fixed-columns.js"></script>
+		<!-- 页面头部 -->
+		<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrapv4.min.css" />
+		<!-- layui -->
+		<link rel="stylesheet" type="text/css" href="/lib/layui/css/layui.css" />
+		<script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="/js/xadmin.js"></script>
+		<!-- JQuery的省市区三联动插件 -->
+		<!-- <script src="http://www.jq22.com/jquery/1.11.1/jquery.min.js"></script>
+		<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script> -->
+		<script src="/js/distpicker.data.js"></script>
+		<script src="/js/distpicker.js"></script>
+		<script src="/js/main.js"></script>
+		<style>
+			/* 鼠标悬浮显示样式 */
+			img{cursor: pointer;}
+	        #pic{position: fixed; display: none;}
+	        #pic1{ width: 600px; height: auto; border-radius: 5px; -webkit-box-shadow: 5px 5px 5px 5px hsla(0,0%,5%,1.00); box-shadow: 5px 5px 5px 0px hsla(0,0%,5%,0.3); } 
+	   
+		
+			.bd-placeholder-img {
+		        font-size: 1.125rem;
+		        text-anchor: middle;
+		        -webkit-user-select: none;
+		        -moz-user-select: none;
+		        -ms-user-select: none;
+		        user-select: none;
+		      }
+
+		      @media (min-width: 768px) {
+		        .bd-placeholder-img-lg {
+		          font-size: 3.5rem;
+		        }
+      		}
+	  /* 三联动*/
+	  #area select { background: red; padding: 5px; font-size: 14px; border: 1px solid #ccc; height: 34px;}
+    </style>
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<a class="navbar-brand" href="index.html">首页</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+				 aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarCollapse">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">预定设备/空间 <span class="sr-only">(current)</span></a>
+						</li>
+
+
+					<!-- 登录注册组件 -->
+					<!-- <div id="signIn" style="float:right">
+						<img src="images/account.png" width="23px" height="23px" />
+						&nbsp &nbsp &nbsp
+						<a href="/turnToLogin" target="_blank">登录</a>
+						&nbsp|&nbsp
+						<a href="/turnToRegister" target="_blank">注册</a>
+						&nbsp&nbsp&nbsp&nbsp
+					</div> -->
+
+				</div>
+			</nav>
+		</header>
+
+		<div class="container" style="margin-top: 100px;">
+			<form action="/turnToApplyKaZuo" method="post">
+				<!-- 省市区三联动 -->
+				<div class="form-inline" style="margin-bottom: 25px;">
+					<label class="layui-form-label" style="width: auto; color: red; display:none" th:text="${positionProviceInfo}" id="positionProviceInfo"></label>
+					<label class="layui-form-label" style="width: auto; color: red; display:none" th:text="${positionCityInfo}" id="positionCityInfo"></label>
+					<label class="layui-form-label">地点：</label>
+					<!-- <div id="area1"></div> -->
+					<div data-toggle="distpicker">
+						<div class="layui-input-inline">
+							<select id="positionProvince" name="positionProvince" required="required" class="form-control"></select>
+						</div>
+						<div class="layui-input-inline" >
+							<select  id="positionCity" name="positionCity" required="required" class="form-control"></select>
+						</div>
+					</div>
+					<!-- 类型 -->
+					<div class="layui-input-inline">
+					<label class="layui-form-label">类型：</label>
+				      <select name="type" class="form-control" id="type">
+				        <option value="">请选择预定类型</option>
+				        <option th:selected="${typeInfo=='设备'}" value="设备">设备</option>
+				        <option th:selected="${typeInfo=='工位'}" value="工位">工位</option>
+				        <option th:selected="${typeInfo=='会议室'}" value="会议室">会议室</option>
+				        <option th:selected="${typeInfo=='报告厅'}" value="报告厅">报告厅</option>
+				      </select>
+				    </div>
+					<div class="layui-inline">
+						<label class="layui-form-label">时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="test1" placeholder="yyyy-MM-dd" name="date"  th:value="${dateInfo}">
+						</div>
+						<input type="submit" class="layui-btn" value="确认">
+					</div>
+				</div>
+				<!-- 颜色图示表示 -->
+				<div style="width:auto; height:15px; margin-bottom: 20px;">
+					<div style="float:left; width:15px;height:15px;background-color: blue;"></div><lable style="float:left">  正在申请的预定</lable>
+					<div style="width:20px; height:15px; float:left;"></div>
+					<div style="width:15px; height:15px; float:left; background-color:green"></div><lable style="float:left">  已通过的申请</lable>
+					<div style="width:20px; height:15px; float:left;"></div>
+				</div>
+				
+			<div  th:each="equipmentAndTime:${EquipmentAndTimes}" style="margin-bottom: 25px;" class="container-item">
+				<table th:id="${equipmentAndTime.equipment.equipmentName}">
+					<thead>
+						<tr style="text-align:left; font-size:5px">
+							<th>时间</th>
+							<th>00:00</th>
+							<th>00:30</th>
+							<th>01:00</th>
+							<th>01:30</th>
+							<th>02:00</th>
+							<th>02:30</th>
+							<th>03:00</th>
+							<th>03:30</th>
+							<th>04:00</th>
+							<th>04:30</th>
+							<th>05:00</th>
+							<th>05:30</th>
+							<th>06:00</th>
+							<th>06:30</th>
+							<th>07:00</th>
+							<th>07:30</th>
+							<th>08:00</th>
+							<th>08:30</th>
+							<th>09:00</th>
+							<th>09:30</th>
+							<th>10:00</th>
+							<th>10:30</th>
+							<th>11:00</th>
+							<th>11:30</th>
+							<th>12:00</th>
+							<th>12:30</th>
+							<th>13:00</th>
+							<th>13:30</th>
+							<th>14:00</th>
+							<th>14:30</th>
+							<th>15:00</th>
+							<th>15:30</th>
+							<th>16:00</th>
+							<th>16:30</th>
+							<th>17:00</th>
+							<th>17:30</th>
+							<th>18:00</th>
+							<th>18:30</th>
+							<th>19:00</th>
+							<th>19:30</th>
+							<th>20:00</th>
+							<th>20:30</th>
+							<th>21:00</th>
+							<th>21:30</th>
+							<th>22:00</th>
+							<th>22:30</th>
+							<th>23:00</th>
+							<th>23:30</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<!-- <td><img src="OTA/15583223291615d8507d9170d12e1832b67368985ddcc.jpg" style="width: 50px; height: 50px;"></td> -->
+							<!-- <td style="padding:0px"><img th:src="${'http://localhost:8081/OTA/'+equipmentAndTime.imageUrl}" style="width: auto; height: 60px;"></td> -->
+							<td style="padding: 1px;">
+								<img th:src="${'http://localhost:8081/OTA/'+equipmentAndTime.imageUrl}" th:bigUrl="${'http://localhost:8081/OTA/'+equipmentAndTime.imageUrl}" alt="" style="width: auto; height: 70px;">
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div style="background-color:darkseagreen; width: 100%; margin-bottom: 0rem;" class="layui-form-item"  >
+					<label class="layui-form-label" style="width: auto;" th:text="'设备名：'+${equipmentAndTime.equipment.equipmentName}"></label>
+					<label class="layui-form-label" style="width: auto;" th:text="'具体位置：'+${equipmentAndTime.equipment.positionSpecificLocation}"></label>
+					<label class="layui-form-label" style="width: auto;" th:text="'开放时段：'+${equipmentAndTime.equipment.OpeningTime}+'-'+${equipmentAndTime.equipment.CloseTime}"></label>
+					<label class="layui-form-label" style="padding-right: 0px; width: auto;" th:text="'单价：'+${equipmentAndTime.equipment.price}+'元/0.5小时'"></label>
+					<label class="layui-form-label" style="width: auto;" th:text="'可容纳人数:'+${equipmentAndTime.equipment.equipmentCapacity}+'人'"></label>
+					<label class="layui-form-label" style="width: auto; color: red;" id="subInfo"></label>
+					<input onclick="reserveEquipment(this)" value="确认预定" class="layui-btn layui-btn-danger" style="float: right;" />
+					<label class="layui-form-label" style="width: auto; color: red; display:none" th:text="${equipmentAndTime.equipment.equipmentId}" id="equipmentId"></label>
+					<!-- 设备“申请中”和“已通过”的当天的时刻 -->
+					<label class="layui-form-label" style="width: auto; color: red; display:none" th:text="${equipmentAndTime.applyingTime}"></label>
+					<label class="layui-form-label" style="width: auto; color: red; display:none" th:text="${equipmentAndTime.passTime}"></label>
+				</div>
+			</div>
+		</div>
+		</form>
+		
+		<script th:inline="javascript">
+			/* 处理表格点击事件 */
+			$("table").each(function(){
+				/* 固定所有的表格列 */
+				$(this).bootstrapTable('destroy').bootstrapTable({
+					fixedColumns: true,
+					fixedNumber: 1
+				});
+				HTMLElement.prototype.__defineGetter__("currentStyle", function() {
+				return this.ownerDocument.defaultView.getComputedStyle(this, null);
+				});
+
+				//获取开放时间
+				var lables=$(this).parent().parent().parent().parent().find('label');
+				console.log("得到的label为："+lables[2].innerText);
+				var time=lables[2].innerText.split("：")[1];
+				var openTime=time.split("-")[0].substring(0,5);
+				var closeTime=time.split("-")[1].substring(0,5);
+				//判断在界面中应该显示的时间——开始时间
+				var startIndex=openTime.substring(3,4);
+				//在xx:01~xx:29之间的
+				if(startIndex<3 && openTime.substring(3,5)!="00"){
+					openTime=openTime.substring(0,3)+"30";
+					console.log("得到的openTime为："+openTime);
+				}
+				//在xx:31~xx:59之间的，小时+1,分变为00
+				if(startIndex>=3 && openTime.substring(3,5)!="30"){
+					//当为x9:xx的时候，第一位进1，第二位为0
+					if(openTime.substring(1,2)==9){
+						openTime=parseInt(openTime.substring(0,1))+1;
+						openTime=openTime+"0:00"
+					}
+					else{
+						//当为xx:xx的时候，第一位不变，第二位+1
+						second=parseInt(openTime.substring(1,2))+1;
+						openTime="0"+second+":00";
+					}
+					console.log("得到的openTime为："+openTime);
+				}
+				//判断在界面中应该显示的时间——结束时间
+				var closeIndex=closeTime.substring(3,4);
+				//在xx:01~xx:29之间的
+				if(closeIndex<3){
+					closeTime=closeTime.substring(0,3)+"00";
+					console.log("得到的closeTIme为："+closeTime);
+				}
+				//在xx:31~xx:59之间的，小时+1,分变为00
+				if(closeIndex>=3){
+					closeTime=closeTime.substring(0,3)+"30";
+					console.log("得到的closeTIme为："+closeTime);
+				}
+				
+				
+				var ths = this.getElementsByTagName('th');
+				var tds = this.getElementsByTagName('td');
+				
+				//通过匹配开始和关闭时间，需要变色的开始索引和结束索引
+				var colorStart=0;
+				var colorEnd=0;
+				for(var i=0;i<ths.length;i++){
+					if(ths[i].innerText == openTime){
+						colorStar=i;
+					}
+					if(ths[i].innerText == closeTime){
+						colorEnd=i;
+					}
+				}
+				//从0-colorStar和colorEnd-最后 的表格变为灰色
+				for(var i=0;i<colorStar;i++){
+					tds[i].style.backgroundColor = 'grey';
+				}
+				for(var i=colorEnd;i<tds.length;i++){
+					tds[i].style.backgroundColor = 'grey';
+				}
+				
+				//处理“已通过”的时间点，将对应的表格变色
+				var passTimes=lables[8].innerText;
+				console.log("得到的通过时间点为"+passTimes);
+				//得到每一个时间点
+				var passTimeStamps=passTimes.substring(1,passTimes.length-1).split(", ");
+				
+				//处理“申请中”的时间点，将对应的表格变色
+				var applyingTime=lables[7].innerText;
+				console.log("得到的申请中的时间点为"+applyingTime);
+				//得到每一个时间点
+				var applyingTimeStamps=applyingTime.substring(1,applyingTime.length-1).split(", ");
+				//将“申请中”的时刻变为蓝色
+				for(var i=0;i<applyingTimeStamps.length;i++){
+					for(var j=0;j<ths.length;j++){
+						if(ths[j].innerText == applyingTimeStamps[i]){
+							tds[j].style.backgroundColor = 'blue';
+							break;
+						}
+					}
+				}
+				
+				//将“已通过”的时刻变为绿色
+				for(var i=0;i<passTimeStamps.length;i++){
+					for(var j=0;j<ths.length;j++){
+						if(ths[j].innerText == passTimeStamps[i]){
+							tds[j].style.backgroundColor = 'green';
+						}
+					}
+				}
+				
+				
+				
+				var startIndex = 0;
+				var endIndex = 0;
+				var clickTime = 0;
+				for (var i = 0; i < tds.length; i++) {
+					tds[i].index = i;
+					tds[i].onclick = function() {
+						//当点击的为空白和红色或蓝色的时候才生效
+						if(tds[this.index].currentStyle.backgroundColor == 'rgba(0, 0, 0, 0)' || tds[this.index].currentStyle.backgroundColor == 'rgb(255, 0, 0)' || tds[this.index].currentStyle.backgroundColor == 'rgb(0, 0, 255)' ){
+							if(clickTime == 0){
+								tds[this.index].style.backgroundColor = 'red';
+							}
+							
+							//当已经点击两次以后清空所有红色
+							if (clickTime == 2) {
+								//遍历所有单元格,如果它的背景色颜色为red,则清除颜色
+								for (var i = 0; i < tds.length; i++) {
+									if (tds[i].currentStyle.backgroundColor == 'rgb(255, 0, 0)') {
+										tds[i].style.backgroundColor = 'rgba(0, 0, 0, 0)';
+									}
+								}
+								clickTime = 0;
+							}
+							//当startIndex为0的时候,记录开始的位置
+							if (startIndex == 0) {
+								tds[this.index].style.backgroundColor = 'red';
+								startIndex = this.index;
+								clickTime = clickTime + 1;
+							} else {
+								//再次点击的时候starIndex已经不为0了
+								//所以记录endIndex,然后将两者中间的表格都变色
+								endIndex = this.index;
+								clickTime = clickTime + 1;
+								/* //方向标志，flag=1,为正向，flag=2为反向
+								var flag=1;
+								if (startIndex > endIndex) {
+									var temp = startIndex;
+									startIndex = endIndex;
+									endIndex = temp;
+									flag=2;
+								} */
+								//正向的时候
+								if(startIndex < endIndex){
+									for (var i = startIndex; i <= endIndex; i++) {
+										console.log("当前格颜色为："+tds[i].currentStyle.backgroundColor)
+										if (tds[i].currentStyle.backgroundColor == 'rgba(0, 0, 0, 0)' || tds[i].currentStyle.backgroundColor == 'rgb(0, 0, 255)') {
+											tds[i].style.backgroundColor = 'red';
+										}
+										/* //如果当前格的颜色为蓝色或绿色，停止循环，将前面一格变为红色，endIndex为i-1
+										if(tds[i].currentStyle.backgroundColor == 'rgb(0, 128, 0)' || tds[i].currentStyle.backgroundColor == 'rgb(0, 0, 255)'){
+											tds[i-1].style.backgroundColor = 'red';
+											endIndex=i-1;
+											break;
+										} */
+										//如果当前格的颜色为绿色，停止循环，将前面一格变为红色，endIndex为i-1
+										if(tds[i].currentStyle.backgroundColor == 'rgb(0, 128, 0)'){
+											tds[i-1].style.backgroundColor = 'red';
+											endIndex=i-1;
+											break;
+										}
+									}
+								}
+								//反向的时候
+								if(startIndex > endIndex){
+									for (var i = startIndex; i >= endIndex; i--) {
+										console.log("当前格颜色为："+tds[i].currentStyle.backgroundColor)
+										if (tds[i].currentStyle.backgroundColor == 'rgba(0, 0, 0, 0)' || tds[i].currentStyle.backgroundColor == 'rgb(0, 0, 255)') {
+											tds[i].style.backgroundColor = 'red';
+										}
+										//如果当前格的颜色为绿色，停止循环，将后面一格变为红色，endIndex为i+1
+										if(tds[i].currentStyle.backgroundColor == 'rgb(0, 128, 0)' ){
+											tds[i+1].style.backgroundColor = 'red';
+											endIndex=i+1;
+											//然后交换starIndex和endIndex的值，便于后面计算总价
+											var temp = startIndex;
+											startIndex = endIndex;
+											endIndex = temp;
+											break;
+										}
+									}
+									//循环结束，如果没有遇到蓝色或绿色starIndex和endIndex是没有改变的，所以这里进行处理
+									if(startIndex > endIndex){
+										var temp = startIndex;
+										startIndex = endIndex;
+										endIndex = temp;
+									}
+								}
+								
+								
+								//根据两者之间的差值,计算出总价,显示在界面中
+								//获取时间——年
+								var timeYearF=document.getElementById("test1").value;
+								//var timeYearS=timeYearF.replace('-','年');
+								//var timeYear=timeYearS.replace('-','月')+'日';
+								//获取时间——开始的时刻
+								var starTime=ths[startIndex].innerText;
+								//获取时间——结束的时刻
+								var endTime=ths[endIndex+1].innerText;
+								//获取单价
+								var unitPrice=parseFloat($(this).parent().parent().parent().parent().parent().parent().parent().find('label')[3].innerText.split("元")[0].substring(3));
+								//计算总价
+								var price=(endIndex-startIndex+1)*unitPrice; 
+								/* var price=(startIndex-endIndex+1)*unitPrice; */
+								//拼接得到的结果字符串,并展示
+								var timeStr=timeYearF+" "+starTime+"-"+endTime+"  共："+price+"元";
+								//显示在界面
+								$(this).parent().parent().parent().parent().parent().parent().parent().find('label')[5].innerText=timeStr;
+		
+								//清空starIndex和endIndex
+								startIndex = 0;
+								endIndex = 0;
+							}
+						}
+						
+					}
+				} 
+			});
+		</script>
+		<!-- 三联动 -->
+		<script src="js/sanliandong.js" type="text/javascript" charset="utf-8"></script>
+		<!-- layui -->
+		<script type="text/javascript">
+			layui.use('laydate', function() {
+				var laydate = layui.laydate;
+
+				//常规用法
+				laydate.render({
+					elem: '#test1'
+				});
+			});
+			
+			//预定界面
+			function reserveEquipment(obj) {
+				//先处理是否登录问题
+				$.ajax({
+					type: "post",
+					url: 'filterApply',
+					contentType: "application/json;charset=utf-8",
+					success: function(data) {
+						console.log("得到的data:"+data);
+						if(data==0){
+			                 window.location.href="/turnToLogin";
+						}
+						else{
+							//已登录则继续处理
+							layer.confirm('确认要提出预定申请吗？',function(index){
+					              //发异步数据
+					               var equipmentId=$(obj).parent().find('label')[6].innerText; 
+					              /* var equipmentId=document.getElementById("equipmentId").innerText; */
+								   var info=$(obj).parent().find('label')[5].innerText; 
+								/*   var info=document.getElementById("subInfo").innerText; */
+								  console.log("得到的值为："+equipmentId+" "+info);
+					              var jsonData="{"+"\"equipmentId\""+":"+'\"'+equipmentId+'\"'+","+"\"info\""+":"+'\"'+info+'\"'+"}";
+					              console.log("组合而成的json数据为；"+jsonData);
+					              $.ajax({
+						        	    type:"post",
+						        	    url:"applyKazuo",
+						        	    data:jsonData,
+						        	    contentType: "application/json;charset=utf-8",
+						        	    success:function(data){
+						                    layer.msg(data,{icon:1,time:1500});
+						        	    },
+						        	    error:function(){
+						        	    	layer.msg("出现错误");
+						        	    }
+						        	});
+					              
+					             /*  $(obj).parents("tr").remove();
+					              layer.msg('已删除!',{icon:1,time:1000}); */
+					          });
+						}
+						
+					},
+					error: function() {
+						alert("系统故障，请稍后重试！");
+					}
+				});
+				
+				
+				/* var layer = layui.layer;
+				//获取设备ID，以及最后的总信息label，和数据一起传回后台
+				var equipmentId=$(obj).parent().find('label')[6].innerText;
+				var info=$(obj).parent().find('label')[5].innerText;
+				console.log("得到的预定的相关信息为："+equipmentId+" "+info);
+				var url='/applyKazuo'+'/'+equipmentId+"/"+info;
+				console.log("得到的URL为："+url);
+				layer.open({
+					type: 2,
+					title: '预定详情',
+					area: ['1150px', '550px'],
+					fix: false,
+					content: url
+				}); */
+			}
+		</script>
+		
+		<script>
+			//处理首部的地点、类型、时间
+			var positionProvince=document.getElementById("positionProviceInfo").innerHTML;
+			var positionCity=document.getElementById("positionCityInfo").innerHTML;
+			/* $("#positionProvince").val(positionProvince);  */
+			$("#positionCity").val(positionCity); 
+			/* $("#positionCity").append("<option value='"+positionCity+"'>"+positionCity+"</option>");
+			$("#positionCity").val(positionCity); */
+		</script>
+		<!-- 图片悬浮显示大图 -->
+		<script>
+			$(function(){
+		        $(".container .container-item img").hover(function(){
+		            var bigUrl = $(this).attr("bigUrl"); 
+		            $(this).parents(".container-item").append("<div id='pic' style='z-index:999'><img src='"+bigUrl+"' id='pic1'></div>");
+		            $(".container .container-item img").mousemove(function(e){
+		                var wH = document.documentElement.clientHeight
+		                var wW = document.documentElement.clientWidth
+		                var imgW =$("#pic1").width()
+		                var imgH =$("#pic1").height()
+		                var cssArr = {"top":"","left":"","bottom":"","right":""}
+		                
+		                if(e.clientX+imgW > wW){
+		                    if(wW - e.clientX < imgW){
+		                        cssArr.left = (e.clientX-imgW-10)+"px";;
+	
+		                    }else{
+		                        cssArr.right = 0;
+		                    }
+		                    
+		                }else{
+		                    cssArr.left = (e.clientX+10)+"px";
+		                }
+		                
+		                if(e.clientY+imgH > wH){
+		                    cssArr.bottom = 0;
+		                }else{
+		                    cssArr.top = (e.clientY+10)+"px";
+		                }
+		                console.log($("#pic1").height(),wH)
+		                console.log(cssArr)
+		                $("#pic").css(cssArr).fadeIn("fast");
+		            });
+		        },function(){
+		            $("#pic").remove();
+		        });
+		    });
+		</script>
+		
+	</body>
+</html>

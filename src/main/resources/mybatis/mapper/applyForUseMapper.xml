@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.ApplyForUseMapper">
+	
+	<!-- public List<Equipment> getEquipmentByPosition(Equipment equipment); -->
+	<select id="getEquipmentByPosition" resultType="com.guet.graduation.cfq.entity.Equipment" parameterType="com.guet.graduation.cfq.entity.Equipment">
+		select * from equipment 
+		where positionProvince=#{positionProvince} and positionCity=#{positionCity} and  type=#{type} and equipmentsStatus="可使用"
+	</select>
+	
+	<!-- public void insertApplyForUse(ApplyForUse applyForUse); -->
+	<insert id="insertApplyForUse" parameterType="com.guet.graduation.cfq.entity.ApplyForUse">
+		INSERT into apply_for_use
+			(apply_id, equipment_id, userId, apply_date,  apply_status,  star_time,  end_time, useTime, applyReason)
+		VALUES (#{apply_id}, #{equipment_id}, #{userId}, #{apply_date}, #{apply_status}, #{star_time}, #{end_time},#{useTime}, #{applyReason})
+	</insert>
+	
+	<!-- public ApplyForUse getAllUseApplication(); -->
+	<select id="getAllUseApplication" resultType="com.guet.graduation.cfq.entity.ApplyForUse">
+		select * from apply_for_use where apply_status="申请中"
+	</select>
+	
+	<!-- public List<ApplyForUse> getAllUseApplicationByUserId(String userId); -->
+	<select id="getAllUseApplicationByUserId" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="String">
+		select apply_for_use.*,equipment.equipmentName,equipment.type,equipment.price,tb_user.login from 
+		apply_for_use,equipment,tb_user
+		where apply_status="申请中" and apply_for_use.equipment_id=equipment.equipmentId and equipment.userId=tb_user.userId and equipment.userId=#{userId}
+	</select>
+	
+	<!-- public void updateApplyStatusToPass(String apply_id); -->
+	<update id="updateApplyStatusToPass" parameterType="String">
+		UPDATE apply_for_use 
+		SET apply_status="已通过"
+		WHERE apply_id=#{apply_id}
+	</update>
+	
+	<!-- public void updateApplyStatusToUnPass(String apply_id); -->
+	<update id="updateApplyStatusToUnPass" parameterType="String">
+		UPDATE apply_for_use 
+		SET apply_status="不通过"
+		WHERE apply_id=#{apply_id}
+	</update>
+	
+	<!-- public ApplyForUse getApplyForUseById(String apply_id); -->
+	<select id="getApplyForUseById" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="String">
+		SELECT * FROM apply_for_use
+		where apply_id=#{apply_id}
+	</select>
+	
+	<!-- public List<ApplyForUse> getAllStartTimeAndEndTime(ApplyForUse applyForUse); -->
+	<select id="getAllStartTimeAndEndTime" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="com.guet.graduation.cfq.entity.ApplyForUse">
+		SELECT *
+		FROM apply_for_use
+		WHERE equipment_id=#{equipment_id} and useTime=#{useTime} and apply_status=#{apply_status}
+	</select>
+	
+	<!-- public List<ApplyForUse> getMyApplyForUse(String userId); -->
+	<select id="getMyApplyForUse" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="String">
+		SELECT apply_for_use.apply_id, equipment.equipmentName, equipment.type, apply_for_use.apply_date, apply_for_use.useTime, CONCAT( date_format(apply_for_use.star_time, '%T'),' - ', date_format(apply_for_use.end_time, '%T')), 
+		equipment.price, apply_for_use.apply_status
+		FROM apply_for_use, equipment
+		WHERE apply_for_use.equipment_id=equipment.equipmentId AND apply_for_use.userId=#{userId}
+		ORDER BY apply_for_use.apply_date DESC
+	</select>
+	
+	<!-- public List<ApplyForUse> getApplyingUseByUseId(String userId); -->
+	<select id="getApplyingUseByUseId" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="String">
+		SELECT apply_for_use.apply_id, equipment.equipmentName, equipment.type, apply_for_use.apply_date, apply_for_use.useTime, CONCAT( date_format(apply_for_use.star_time, '%T'),' - ', date_format(apply_for_use.end_time, '%T')), 
+		equipment.price, apply_for_use.apply_status
+		FROM apply_for_use, equipment
+		WHERE apply_for_use.equipment_id=equipment.equipmentId AND apply_for_use.userId=#{userId} AND apply_for_use.apply_status="申请中"
+		ORDER BY apply_for_use.apply_date DESC
+	</select>
+	
+	<!-- public List<ApplyForUse> getPassApplyByUseId(String userId); -->
+	<select id="getPassApplyByUseId" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="String">
+		SELECT apply_for_use.apply_id, equipment.equipmentName, equipment.type, apply_for_use.apply_date, apply_for_use.useTime, CONCAT( date_format(apply_for_use.star_time, '%T'),' - ', date_format(apply_for_use.end_time, '%T')), 
+		equipment.price, apply_for_use.apply_status
+		FROM apply_for_use, equipment
+		WHERE apply_for_use.equipment_id=equipment.equipmentId AND apply_for_use.userId=#{userId} AND apply_for_use.apply_status="已通过"
+		ORDER BY apply_for_use.apply_date DESC
+	</select>
+	
+	<!-- public List<ApplyForUse> getUnPassApplyByUseId(String userId); -->
+	<select id="getUnPassApplyByUseId" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="String">
+		SELECT apply_for_use.apply_id, equipment.equipmentName, equipment.type, apply_for_use.apply_date, apply_for_use.useTime, CONCAT( date_format(apply_for_use.star_time, '%T'),' - ', date_format(apply_for_use.end_time, '%T')), 
+		equipment.price, apply_for_use.apply_status
+		FROM apply_for_use, equipment
+		WHERE apply_for_use.equipment_id=equipment.equipmentId AND apply_for_use.userId=#{userId} AND apply_for_use.apply_status="不通过"
+		ORDER BY apply_for_use.apply_date DESC
+	</select>
+	
+	<!-- public List<ApplyForUse> getConflicApply(ApplyForUse applyForUse); -->
+	<select id="getConflicApply" resultType="com.guet.graduation.cfq.entity.ApplyForUse" parameterType="com.guet.graduation.cfq.entity.ApplyForUse">
+		SELECT * FROM apply_for_use 
+		WHERE ((apply_for_use.star_time &lt; #{star_time} AND (end_time &gt; #{star_time} AND end_time &lt;= #{end_time}))
+			OR (star_time &gt;= #{star_time} AND end_time &lt;= #{end_time} )
+			OR (star_time &gt;= #{star_time} AND star_time &lt; #{end_time} AND end_time &gt; #{end_time}))
+			AND apply_for_use.equipment_id = #{equipment_id} and useTime= #{useTime} and apply_status="已通过"
+	</select>
+	
+</mapper>

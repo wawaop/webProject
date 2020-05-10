@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.EquipmentMapper">
+
+	<!-- public void insertEquipment(Equipment equipment); -->
+	<insert id="insertEquipment"
+		parameterType="com.guet.graduation.cfq.entity.Equipment">
+		insert into equipment
+		(equipmentId,userId,equipmentName,equipmentDescrip,equipmentCapacity,equipmentsStatus,positionProvince,positionCity,positionSpecificLocation,openingTime,closeTime,type,price,isNeedApply)
+		values(#{equipmentId},#{userId},#{equipmentName},#{equipmentDescrip},#{equipmentCapacity},#{equipmentsStatus},#{positionProvince},#{positionCity},#{positionSpecificLocation},#{openingTime},#{closeTime},#{type},#{price},#{isNeedApply})
+	</insert>
+	
+	<!-- public List<Equipment> getEquipmentByUserId(String userId); -->
+	<select id="getEquipmentByUserId" parameterType="String" resultType="com.guet.graduation.cfq.entity.Equipment">
+		select * from equipment where userId=#{userId}  ORDER BY equipmentsStatus DESC
+	</select>
+
+	<!-- public void deleteEuipmentById(String equipmentId); -->
+	<delete id="deleteEuipmentById" parameterType="String">
+		delete from equipment where equipmentId=#{equipmentId}
+	</delete>
+	
+	<!-- public void insertPublishApply(PublishApply publishApply); -->
+	<insert id="insertPublishApply" parameterType="com.guet.graduation.cfq.entity.PublishApply">
+		insert into publish_apply(publishId,userId,equipmentId,applyTime,applystatus)
+		values (#{publishId},#{userId},#{equipmentId},#{applyTime},#{applystatus})
+	</insert>
+	
+	<!-- public Equipment getEquipmentById(String equipmentId); -->
+	<select id="getEquipmentById" parameterType="String" resultType="com.guet.graduation.cfq.entity.Equipment">
+		select * from equipment where equipmentId=#{equipmentId}
+	</select>
+	
+	<!-- public void updateEquipment(Equipment equipment); -->
+	<update id="updateEquipment" parameterType="com.guet.graduation.cfq.entity.Equipment">
+		update equipment
+		set 
+		equipmentName=#{equipmentName},equipmentDescrip=#{equipmentDescrip},equipmentCapacity=#{equipmentCapacity},equipmentsStatus=#{equipmentsStatus},openingTime=#{openingTime},closeTime=#{closeTime},price=#{price},type=#{type}
+		where equipmentId=#{equipmentId}
+	</update>
+	
+	<!-- public void updateEquipmentStatus(String equipmentId); -->
+	<update id="updateEquipmentStatus" parameterType="String">
+		update equipment 
+		set equipmentsStatus="可使用"
+		where equipmentId=#{equipmentId}
+	</update>
+	
+	<!-- public List<Equipment> searchEquipment(Equipment equipment); -->
+	<select id="searchEquipment" resultType="com.guet.graduation.cfq.entity.Equipment" parameterType="com.guet.graduation.cfq.entity.Equipment">
+		select * from equipment where equipmentName=#{equipmentName} and userId=#{userId}
+	</select>
+	
+</mapper>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.OrderMapper">
+
+	<!-- public void insertOrder(Order order); -->
+	<insert id="insertOrder" parameterType="com.guet.graduation.cfq.entity.Order">
+		INSERT INTO orders
+			(order_id, userId, equipment_id, order_date, star_time, end_time, useTime, price, order_status)
+		VALUES (#{order_id}, #{userId}, #{equipment_id}, #{order_date}, #{star_time}, #{end_time}, #{useTime}, #{price}, #{order_status})
+	</insert>
+	
+	<!-- public List<MyOrder> getOrderByUserId(String userId); -->
+	<select id="getOrderByUserId" resultType="com.guet.graduation.cfq.entity.MyOrder" parameterType="String">
+		SELECT orders.order_id orderId,equipment.equipmentName,equipment.type, orders.order_date orderDate, orders.useTime, CONCAT( date_format(orders.star_time, '%T'),' - ', date_format(orders.end_time, '%T')) timeStamp, equipment.price unitPrice, orders.price, orders.order_status orderStatus
+		from orders,equipment
+		where orders.equipment_id = equipment.equipmentId and orders.userId=#{userId}
+		ORDER BY orders.order_date DESC
+	</select>
+	
+	<!-- public Double getSumPriceByEIdAndTime(EquipmentIdAndTime equipmentIdAndTime); -->
+	<select id="getSumPriceByEIdAndTime" resultType="Double" parameterType="com.guet.graduation.cfq.entity.EquipmentIdAndTime">
+		SELECT SUM(orders.price)
+		from orders
+		WHERE equipment_id=#{equipmentId} and useTime=#{useTime} and order_status="已付款"
+		GROUP BY equipment_id,useTime
+	</select>
+	
+	<!-- public Float getSumByEidAndTimes(EquipmentIdAndTimes equipmentIdAndTimes); -->
+	<select id="getSumByEidAndTimes" resultType="Float" parameterType="com.guet.graduation.cfq.entity.EquipmentIdAndTimes">
+		SELECT SUM(price) from orders
+		where order_status="已付款" and useTime BETWEEN #{starTime} and #{endTime} and equipment_id=#{equipmentId}
+		GROUP BY equipment_id;
+	</select>
+	
+	<!-- public void updateOrderStatus(String orderId); -->
+	<update id="updateOrderStatus" parameterType="String">
+		UPDATE orders 
+		SET orders.order_status="已付款"
+		where orders.order_id=#{orderId}
+	</update>
+	
+	<!-- public List<MyOrder> getTobePaidOrderByUserId(String userId); -->
+	<select id="getTobePaidOrderByUserId" resultType="com.guet.graduation.cfq.entity.MyOrder" parameterType="String">
+		SELECT orders.order_id orderId,equipment.equipmentName,equipment.type, orders.order_date orderDate, orders.useTime, CONCAT( date_format(orders.star_time, '%T'),' - ', date_format(orders.end_time, '%T')) timeStamp, equipment.price unitPrice, orders.price, orders.order_status orderStatus
+		from orders,equipment
+		where orders.equipment_id = equipment.equipmentId and orders.userId=#{userId} and orders.order_status="待付款"
+		ORDER BY orders.order_date DESC
+	</select>
+	
+	<!-- public List<MyOrder> getPaidOrders(String userId); -->
+	<select id="getPaidOrders" resultType="com.guet.graduation.cfq.entity.MyOrder" parameterType="String">
+		SELECT orders.order_id orderId,equipment.equipmentName,equipment.type, orders.order_date orderDate, orders.useTime, CONCAT( date_format(orders.star_time, '%T'),' - ', date_format(orders.end_time, '%T')) timeStamp, equipment.price unitPrice, orders.price, orders.order_status orderStatus
+		from orders,equipment
+		where orders.equipment_id = equipment.equipmentId and orders.userId=#{userId} and orders.order_status="已付款"
+		ORDER BY orders.order_date DESC
+	</select>
+	
+</mapper>

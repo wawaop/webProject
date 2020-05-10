@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>我的订单</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" href="/css/font.css">
+		<link rel="stylesheet" href="/css/xadmin.css">
+		<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+		<script type="text/javascript" src="/js/xadmin.js"></script>
+		<!-- bootstrap -->
+		<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+		<script src="/bootstrap/js/bootstrap.min.js"></script>
+		<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+		<!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	</head>
+
+	<body>
+		
+			<div class="x-body">
+				<xblock>
+					<!-- <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量通过</button>
+					<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量不通过</button> -->
+				</xblock>
+				<div class="layui-tab">
+				  <ul class="layui-tab-title">
+				    <li th:class="${userApplytabNum==1}? 'layui-this' ">全部申请</li>
+				    <li th:class="${userApplytabNum==2}? 'layui-this' ">申请中</li>
+				    <li th:class="${userApplytabNum==3}? 'layui-this' ">已通过</li>
+				    <li th:class="${userApplytabNum==4}? 'layui-this' ">不通过</li>
+				  </ul>
+				  <div class="layui-tab-content">
+				  	<!-- 第一个tab -->
+				    <div th:class="${userApplytabNum==1}? 'layui-tab-item layui-show' : 'layui-tab-item'">
+						      <table class="layui-table">
+								<thead>
+									<tr>
+										<th>
+											<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+										</th>
+										<th>申请编号</th>
+										<th>设备名</th>
+										<th>种类</th>
+										<th>申请时间</th>
+										<th>使用日期</th>
+										<th>使用时刻</th>
+										<th>单价(/0.5小时)</th>
+										<th>申请状态</th>
+								</thead>
+								<tbody>
+									<tr th:each="myUseApply : ${myUseAppliesInfo.getList()}">
+										<td>
+							              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+							            </td>
+							            <td th:text="${myUseApply.apply_id}" style="font-size:10px"></td>
+							            <td th:text="${myUseApply.equipmentName}"></td>
+							            <td th:text="${myUseApply.type}"></td>
+							            <td th:text="${myUseApply.apply_date}"></td>
+							            <td th:text="${myUseApply.useTime}"></td>
+							            <td th:text="${myUseApply.userTimestap}"></td>
+							            <td th:text="${myUseApply.price}"></td>
+							            <td th:text="${myUseApply.apply_status}"></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- 分页部分 -->
+							<div class="modal-footer no-margin-top">
+							    <div class="col-md-6">
+							        当前第 [[${myUseAppliesInfo.pageNum}]]页,共 [[${myUseAppliesInfo.pages}]] 页.一共 [[${myUseAppliesInfo.total}]] 条记录
+							    </div>
+							    <ul class="pagination pull-right no-margin">
+							        <li th:if="${myUseAppliesInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?pageNum=1'">首页</a>
+							        </li>
+							 
+							        <li class="prev" th:if="${myUseAppliesInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?pageNum='+${myUseAppliesInfo.prePage}">
+							                <i class="ace-icon fa fa-angle-double-left">上一页</i>
+							            </a>
+							        </li>
+							        <!--遍历条数-->
+							            <li th:each="nav:${myUseAppliesInfo.navigatepageNums}">
+							                <a th:href="'/myUseApply?pageNum='+${nav}" th:text="${nav}" th:if="${nav != myUseAppliesInfo.pageNum}"></a>
+							                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == myUseAppliesInfo.pageNum}" th:text="${nav}" ></span>
+							            </li>
+							 
+							        <li class="next" th:if="${myUseAppliesInfo.hasNextPage}">
+							            <a th:href="'/myUseApply?pageNum='+${myUseAppliesInfo.nextPage}">
+							                <i class="ace-icon fa fa-angle-double-right">下一页</i>
+							            </a>
+							        </li>
+							 
+							        <li>
+							            <a th:href="'/myUseApply?pageNum='+${myUseAppliesInfo.pages}">尾页</a>
+							        </li>
+							    </ul>
+							</div>
+				    </div>
+				    <!-- 第二个tab -->
+				    <div th:class="${userApplytabNum==2}? 'layui-tab-item layui-show' : 'layui-tab-item'">
+				    	 <table class="layui-table">
+								<thead>
+									<tr>
+										<th>
+											<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+										</th>
+										<th>申请编号</th>
+										<th>设备名</th>
+										<th>种类</th>
+										<th>申请时间</th>
+										<th>使用日期</th>
+										<th>使用时刻</th>
+										<th>单价(/0.5小时)</th>
+										<th>申请状态</th>
+								</thead>
+								<tbody>
+									<tr th:each="myUseApply : ${applyingPageInfo.getList()}">
+										<td>
+							              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+							            </td>
+							            <td th:text="${myUseApply.apply_id}" style="font-size:10px"></td>
+							            <td th:text="${myUseApply.equipmentName}"></td>
+							            <td th:text="${myUseApply.type}"></td>
+							            <td th:text="${myUseApply.apply_date}"></td>
+							            <td th:text="${myUseApply.useTime}"></td>
+							            <td th:text="${myUseApply.userTimestap}"></td>
+							            <td th:text="${myUseApply.price}"></td>
+							            <td th:text="${myUseApply.apply_status}"></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- 分页部分 -->
+							<div class="modal-footer no-margin-top">
+							    <div class="col-md-6">
+							        当前第 [[${applyingPageInfo.pageNum}]]页,共 [[${applyingPageInfo.pages}]] 页.一共 [[${applyingPageInfo.total}]] 条记录
+							    </div>
+							    <ul class="pagination pull-right no-margin">
+							        <li th:if="${applyingPageInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?applyPageNum=1&userApplytabNum=2'">首页</a>
+							        </li>
+							 
+							        <li class="prev" th:if="${applyingPageInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?applyPageNum='+${applyingPageInfo.prePage} +'&userApplytabNum=2'">
+							                <i class="ace-icon fa fa-angle-double-left">上一页</i>
+							            </a>
+							        </li>
+							        <!--遍历条数-->
+							            <li th:each="nav:${applyingPageInfo.navigatepageNums}">
+							                <a th:href="'/myUseApply?applyPageNum='+${nav}+'&userApplytabNum=2'" th:text="${nav}" th:if="${nav != applyingPageInfo.pageNum}"></a>
+							                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == applyingPageInfo.pageNum}" th:text="${nav}" ></span>
+							            </li>
+							 
+							        <li class="next" th:if="${applyingPageInfo.hasNextPage}">
+							            <a th:href="'/myUseApply?applyPageNum='+${applyingPageInfo.nextPage}+'&userApplytabNum=2'">
+							                <i class="ace-icon fa fa-angle-double-right">下一页</i>
+							            </a>
+							        </li>
+							 
+							        <li>
+							            <a th:href="'/myUseApply?applyPageNum='+${applyingPageInfo.pages}+'&userApplytabNum=2'">尾页</a>
+							        </li>
+							    </ul>
+							</div>
+				    </div>
+				    <!-- 第三个tab -->
+				    <div th:class="${userApplytabNum==3}? 'layui-tab-item layui-show' : 'layui-tab-item'">
+				    	<table class="layui-table">
+								<thead>
+									<tr>
+										<th>
+											<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+										</th>
+										<th>申请编号</th>
+										<th>设备名</th>
+										<th>种类</th>
+										<th>申请时间</th>
+										<th>使用日期</th>
+										<th>使用时刻</th>
+										<th>单价(/0.5小时)</th>
+										<th>申请状态</th>
+								</thead>
+								<tbody>
+									<tr th:each="myUseApply : ${passApplyPageInfo.getList()}">
+										<td>
+							              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+							            </td>
+							            <td th:text="${myUseApply.apply_id}" style="font-size:10px"></td>
+							            <td th:text="${myUseApply.equipmentName}"></td>
+							            <td th:text="${myUseApply.type}"></td>
+							            <td th:text="${myUseApply.apply_date}"></td>
+							            <td th:text="${myUseApply.useTime}"></td>
+							            <td th:text="${myUseApply.userTimestap}"></td>
+							            <td th:text="${myUseApply.price}"></td>
+							            <td th:text="${myUseApply.apply_status}"></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- 分页部分 -->
+							<div class="modal-footer no-margin-top">
+							    <div class="col-md-6">
+							        当前第 [[${passApplyPageInfo.pageNum}]]页,共 [[${passApplyPageInfo.pages}]] 页.一共 [[${passApplyPageInfo.total}]] 条记录
+							    </div>
+							    <ul class="pagination pull-right no-margin">
+							        <li th:if="${passApplyPageInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?passPageNum=1&userApplytabNum=3'">首页</a>
+							        </li>
+							 
+							        <li class="prev" th:if="${passApplyPageInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?passPageNum='+${passApplyPageInfo.prePage} +'&userApplytabNum=3'">
+							                <i class="ace-icon fa fa-angle-double-left">上一页</i>
+							            </a>
+							        </li>
+							        <!--遍历条数-->
+							            <li th:each="nav:${passApplyPageInfo.navigatepageNums}">
+							                <a th:href="'/myUseApply?passPageNum='+${nav}+'&userApplytabNum=3'" th:text="${nav}" th:if="${nav != passApplyPageInfo.pageNum}"></a>
+							                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == passApplyPageInfo.pageNum}" th:text="${nav}" ></span>
+							            </li>
+							 
+							        <li class="next" th:if="${passApplyPageInfo.hasNextPage}">
+							            <a th:href="'/myUseApply?passPageNum='+${passApplyPageInfo.nextPage}+'&userApplytabNum=3'">
+							                <i class="ace-icon fa fa-angle-double-right">下一页</i>
+							            </a>
+							        </li>
+							 
+							        <li>
+							            <a th:href="'/myUseApply?passPageNum='+${passApplyPageInfo.pages}+'&userApplytabNum=3'">尾页</a>
+							        </li>
+							    </ul>
+							</div>
+					</div>
+					<!-- 第四个tab -->
+				    <div th:class="${userApplytabNum==4}? 'layui-tab-item layui-show' : 'layui-tab-item'">
+				  		<table class="layui-table">
+								<thead>
+									<tr>
+										<th>
+											<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+										</th>
+										<th>申请编号</th>
+										<th>设备名</th>
+										<th>种类</th>
+										<th>申请时间</th>
+										<th>使用日期</th>
+										<th>使用时刻</th>
+										<th>单价(/0.5小时)</th>
+										<th>申请状态</th>
+								</thead>
+								<tbody>
+									<tr th:each="myUseApply : ${unPassApplyPageInfo.getList()}">
+										<td>
+							              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+							            </td>
+							            <td th:text="${myUseApply.apply_id}" style="font-size:10px"></td>
+							            <td th:text="${myUseApply.equipmentName}"></td>
+							            <td th:text="${myUseApply.type}"></td>
+							            <td th:text="${myUseApply.apply_date}"></td>
+							            <td th:text="${myUseApply.useTime}"></td>
+							            <td th:text="${myUseApply.userTimestap}"></td>
+							            <td th:text="${myUseApply.price}"></td>
+							            <td th:text="${myUseApply.apply_status}"></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- 分页部分 -->
+							<div class="modal-footer no-margin-top">
+							    <div class="col-md-6">
+							        当前第 [[${unPassApplyPageInfo.pageNum}]]页,共 [[${unPassApplyPageInfo.pages}]] 页.一共 [[${unPassApplyPageInfo.total}]] 条记录
+							    </div>
+							    <ul class="pagination pull-right no-margin">
+							        <li th:if="${unPassApplyPageInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?unPassPageNum=1&userApplytabNum=4'">首页</a>
+							        </li>
+							 
+							        <li class="prev" th:if="${unPassApplyPageInfo.hasPreviousPage}">
+							            <a th:href="'/myUseApply?unPassPageNum='+${unPassApplyPageInfo.prePage} +'&userApplytabNum=4'">
+							                <i class="ace-icon fa fa-angle-double-left">上一页</i>
+							            </a>
+							        </li>
+							        <!--遍历条数-->
+							            <li th:each="nav:${unPassApplyPageInfo.navigatepageNums}">
+							                <a th:href="'/myUseApply?unPassPageNum='+${nav}+'&userApplytabNum=4'" th:text="${nav}" th:if="${nav != unPassApplyPageInfo.pageNum}"></a>
+							                <span style="font-weight: bold;background: #6faed9;" th:if="${nav == unPassApplyPageInfo.pageNum}" th:text="${nav}" ></span>
+							            </li>
+							 
+							        <li class="next" th:if="${unPassApplyPageInfo.hasNextPage}">
+							            <a th:href="'/myUseApply?unPassPageNum='+${unPassApplyPageInfo.nextPage}+'&userApplytabNum=4'">
+							                <i class="ace-icon fa fa-angle-double-right">下一页</i>
+							            </a>
+							        </li>
+							 
+							        <li>
+							            <a th:href="'/myUseApply?unPassPageNum='+${unPassApplyPageInfo.pages}+'&userApplytabNum=4'">尾页</a>
+							        </li>
+							    </ul>
+							</div>
+				    </div>
+				  </div>
+				</div>
+				
+			</div>
+
+		<script>
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+	</body>
+
+</html>

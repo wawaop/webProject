@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/css/font.css">
+    <link rel="stylesheet" href="/css/xadmin.css">
+    <!-- 图片显示的css -->
+    <link rel="stylesheet" type="text/css" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/js/xadmin.js"></script>
+    <!-- 图片显示的js -->
+    <script src="/js/masonry.pkgd.min.js"></script>
+    <script src="/js/imagesloaded.js"></script>
+    <script src="/js/classie.js"></script>
+    <script src="/js/AnimOnScroll.js"></script>
+    <script src="/js/modernizr.custom.js"></script>
+    <script src="http://www.jq22.com/js/jq.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  
+  <body>
+    <div class="x-body">
+          <div class="layui-form-item">
+              <label for="applyId" class="layui-form-label" >
+                  	设备名
+              </label>
+              <div class="layui-input-inline">
+                  <input th:value="${applyDetail.equipment.equipmentName}" type="text" id="applyId" name="applyId" autocomplete="off" class="layui-input" disabled="">
+              </div>
+              <label for="equimentName" class="layui-form-label">
+                  	申请用户
+              </label>
+              <div class="layui-input-inline">
+                  <input th:value="${applyDetail.userName}" type="text" id="userName" name="userName" autocomplete="off" class="layui-input">
+                  <label class="layui-form-label" style="width: auto; color: red; display:none" th:text="${applyDetail.publishApply.publishId}" id="publishId"></label>
+                  <!-- <input th:value="${applyDetail.publishApply.publishId}" type="text" id="publishId" name="publishId" autocomplete="off" class="layui-input" > -->
+              </div>
+          </div>
+          <div class="layui-form-item">
+             	<div class="layui-form-item">
+					<!-- 设备或空间种类-->
+					<label class="layui-form-label">
+						设备空间类型:
+					</label>
+					<div class="layui-input-inline" style="width:auto">
+						<label class="layui-form-label" style="width:auto" th:text="${applyDetail.equipment.type}"></label>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<!-- 可容纳人数 -->
+					<label class="layui-form-label"> 
+						可容纳人数:
+					</label>
+					<div class="layui-input-inline" style="width:auto">
+						<label class="layui-form-label" style="width:auto;" th:text="${applyDetail.equipment.equipmentCapacity + '人' }" ></label>
+					</div>
+					<!-- 设备或空间状态-->
+					<label class="layui-form-label" style="width:auto"> 
+						当前状态:
+					</label>
+					<div class="layui-input-inline" style="width:auto">
+						<label class="layui-form-label" style="width:auto;" th:text="${applyDetail.equipment.equipmentsStatus}" ></label>
+					</div>
+					<!-- 省市三联动确定省市区 -->
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							 设备/空间地址:
+						</label>
+						<label class="layui-form-label" style="width: auto;" th:text="${applyDetail.equipment.positionProvince + ' 省  ' +applyDetail.equipment.positionCity + ' 市 '+applyDetail.equipment.positionSpecificLocation}"></label>
+					</div>
+					<!-- 设置开放时间 -->
+					<div class="layui-form-item">
+						<label class="layui-form-label">
+							开放时间:
+						</label>
+						<div class="layui-input-inline" style="width:auto">
+							<label class="layui-form-label" style="width:auto" th:text="${applyDetail.equipment.openingTime+' - '+applyDetail.equipment.closeTime}"></label>
+						</div>
+						<!-- 每半小时单价 -->
+						<label for="price" class="layui-form-label"> 
+							价格(/30min):
+						</label>
+						<div class="layui-input-inline">
+							<!-- <input th:value="${applyDetail.equipment.price}" type="text" id="price" name="price" autocomplete="off" class="layui-input"> -->
+							<label class="layui-form-label" style="width:auto" th:text="${applyDetail.equipment.price}"></label>
+						</div>
+						
+					</div>
+					<!-- 设备具体描述 -->
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">设备/空间描述:</label>
+						<label class="layui-form-label" th:text="${applyDetail.equipment.equipmentDescrip}" style="width:auto"></label>
+					</div>
+					<!-- 上传多张设备/空间图片 -->
+					<div class="layui-form-item">
+					<div class="layui-upload">
+						<button class="layui-btn layui-btn-sm" style="margin-left:109px" onclick="pass()" >通过</button>
+			        	<button class="layui-btn layui-btn-sm  layui-btn-danger" onclick="unPass()">不通过</button>
+						<!-- 图片 -->
+						<br/>
+						<p>设备/空间图片：</p>
+						<ul class="grid effect-1" id="grid" style="margin-top:15px;">
+							<li th:each="image : ${applyDetail.equipmentImages}">
+								<a th:href="${'http://localhost:8081/OTA/'+image.image_url}"><img th:src="${'http://localhost:8081/OTA/'+image.image_url}" style="width:356px;">
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		 </div>
+    </div>
+    <script>
+    layui.use(['form', 'layer'], function() {
+		$ = layui.jquery;
+		var form = layui.form,
+			layer = layui.layer;
+	});
+    
+    /*处理通过*/
+    function pass(){
+    	console.log("得到的值为："+document.getElementById("publishId").innerText);
+    	layer.confirm('确认通过？',function(index){
+            //发异步通过申请
+            console.log("得到的值为："+document.getElementById("publishId").innerText);
+            var passID=document.getElementById("publishId").innerText;
+            var JsonPassId="{"+"\"passID\""+":"+'\"'+passID+'\"'+"}";
+            console.log("组合而成的json数据为；"+JsonPassId);
+            $.ajax({
+	        	    type:"post",
+	        	    url:"passApply",
+	        	    data:JsonPassId,
+	        	    contentType: "application/json;charset=utf-8",
+	        	    success:function(data){
+	        	    	parent.location.reload();
+	                    layer.msg('已通过!',{icon:1,time:1000});
+	        	    },
+	        	    error:function(){
+	        	    	alert("出现错误");
+	        	    }
+	        	});
+            
+        });      
+    }
+    
+    function unPass(){
+    	layer.confirm('确认不予通过？',function(index){
+            //发异步通过申请
+            console.log("得到的值为："+document.getElementById("publishId").innerText);
+            var unPassID=document.getElementById("publishId").innerText;
+            var JsonUnPassId="{"+"\"unPassID\""+":"+'\"'+unPassID+'\"'+"}";
+            console.log("组合而成的json数据为；"+JsonUnPassId);
+            $.ajax({
+	        	    type:"post",
+	        	    url:"unPassApply",
+	        	    data:JsonUnPassId,
+	        	    contentType: "application/json;charset=utf-8",
+	        	    success:function(data){
+	        	    	parent.location.reload();
+	                    layer.msg('申请已处理!',{icon:1,time:1000});
+	        	    },
+	        	    error:function(){
+	        	    	alert("出现错误");
+	        	    }
+	        	});
+            
+        });
+    }
+	</script>
+    <script>var _hmt = _hmt || []; (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+    <!-- 图片样式 -->
+    <script>
+	
+		new AnimOnScroll( document.getElementById( 'grid' ), {
+	
+			minDuration : 0.4,
+	
+			maxDuration : 0.7,
+	
+			viewportFactor : 0.2
+	
+		} );
+	
+	</script>
+    
+  </body>
+  
+</html>

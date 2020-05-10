@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+		<meta name="generator" content="Jekyll v3.8.5">
+		<title>创业园区</title>
+		<!-- Bootstrap core CSS -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+		<style>
+			.bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+		<!-- Custom styles for this template -->
+		<link href="css/carousel.css" rel="stylesheet">
+	</head>
+	<body>
+		<header>
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+				<a class="navbar-brand" href="index.html">首页</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+				 aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarCollapse">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="/turnToApplyKaZuo" target="_blank">预定设备/空间<span class="sr-only">(current)</span></a>
+						</li>
+						<!-- <li class="nav-item">
+							<a class="nav-link" href="#">预定会议室</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#">预定报告厅</a>
+						</li> -->
+					</ul>
+					<!-- <form class="form-inline mt-2 mt-md-0">
+						<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+					</form> -->
+					
+					
+					<!-- 登录注册组件 -->
+					<div id="signIn" th:if="${#strings.isEmpty(session.userName)}">
+						<img src="images/account.png" width="23px" height="23px" />
+						&nbsp &nbsp &nbsp
+						<a href="/turnToLogin" target="_blank">登录</a>
+						&nbsp|&nbsp
+						<a href="/turnToRegister" target="_blank">注册</a>
+						&nbsp&nbsp&nbsp&nbsp
+					</div>
+					
+				</div>
+			</nav>
+		</header>
+
+		<main role="main">
+
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+				<ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+					<li data-target="#myCarousel" data-slide-to="2"></li>
+				</ol>
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+						 focusable="false" role="img">
+							<!-- <rect width="100%" height="100%" fill=""></rect> -->
+							<image width="100%" height="100%" xlink:href="images/homePage1.jpg"/>
+						</svg>
+						<div class="container">
+							<div class="carousel-caption text-left">
+								<h1>办公环境</h1>
+								<p>生活是一种品质，优雅舒适的办公环境，让您获取一份从容、简约、快乐</p>
+								<p>Life is a quality, elegant and comfortable office environment, so that you can get a calm, simple and happy</p>
+							</div>
+						</div>
+					</div>
+					<div class="carousel-item">
+						<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+						 focusable="false" role="img">
+							<!-- <rect width="100%" height="100%" fill="#777" /> -->
+							<image width="100%" height="100%" xlink:href="images/homePage2.jpg"/>
+						</svg>
+						<div class="container">
+							<div class="carousel-caption">
+								<h1>团队协作</h1>
+								<p>有效的团队协作，让每个人在分享和交互时达成共识，爱上团队工作。</p>
+								<p>Effective teamwork enables everyone to reach a consensus in sharing and interaction and fall in love with team work.</p>
+							</div>
+						</div>
+					</div>
+					<div class="carousel-item">
+						<svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"
+						 focusable="false" role="img">
+							<!-- <rect width="100%" height="100%" fill="#777" /> -->
+							<image width="100%" height="100%" xlink:href="images/homePage3.jpg"/>
+						</svg>
+						<div class="container">
+							<div class="carousel-caption text-right">
+								<h1>休闲区域</h1>
+								<p>工作之余的休息，让你从紧绷的工作状态中走出，获取新思路。</p>
+								<p>Rest after work can help you get out of the tight working state and get new ideas.</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+
+
+			<!-- Marketing messaging and featurettes
+  ================================================== -->
+  <!-- ==========设置显示第一行列表================================================================= -->
+			
+			<hr >
+			<div class="box" style="width: 98%; margin: auto;">
+				<div class="row mb-3">
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-primary">协作</strong>
+						  <h3 class="mb-0">完美的协作</h3>
+						  <!-- <div class="mb-1 text-muted">Nov 12</div> -->
+						  <p class="card-text mb-auto">完美的协作让工作效率更高</p>
+						  <p>Perfect collaboration makes work more efficient</p>
+						  <!-- <a href="#" class="stretched-link"></a> -->
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+						  <img src="/img/123.jpg" style="width:200px; height:250px">
+						</div>
+					  </div>
+					</div>
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-success">团队</strong>
+						  <h3 class="mb-0">和谐的团队</h3>
+						  <!-- <div class="mb-1 text-muted">Nov 11</div> -->
+						  <p class="mb-auto">和谐的团队能体现更大的力量</p>
+						  <p>Harmonious team can embody greater strength</p>
+						  <!-- <a href="#" class="stretched-link">Continue reading</a> -->
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+						  <img src="/img/456.jpg" style="width:200px; height:250px">
+						</div>
+					  </div>
+					</div>
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-primary">环境</strong>
+						  <h3 class="mb-0">舒适的环境</h3>
+						  <!-- <div class="mb-1 text-muted">Nov 12</div> -->
+						  <p class="card-text mb-auto">舒适的环境让工作效率更高</p>
+						  <p>Comfortable environment makes work more efficient</p>
+						  <!-- <a href="#" class="stretched-link">Continue reading</a> -->
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <!-- <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> -->
+						  <img src="/img/234.jpg" style="width:200px; height:250px">
+						</div>
+					  </div>
+					</div>
+				</div>
+			</div>
+			
+	<!-- ==========设置显示第二行列表================================================================= -->
+			<!-- <br>
+			<hr >
+			<div class="box" style="width: 98%; margin: auto;">
+				<div class="row mb-3">
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-primary">World</strong>
+						  <h3 class="mb-0">Featured post</h3>
+						  <div class="mb-1 text-muted">Nov 12</div>
+						  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+						  <a href="#" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						</div>
+					  </div>
+					</div>
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-success">Design</strong>
+						  <h3 class="mb-0">Post title</h3>
+						  <div class="mb-1 text-muted">Nov 11</div>
+						  <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+						  <a href="#" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						</div>
+					  </div>
+					</div>
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-primary">World</strong>
+						  <h3 class="mb-0">Featured post</h3>
+						  <div class="mb-1 text-muted">Nov 12</div>
+						  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+						  <a href="#" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						</div>
+					  </div>
+					</div>
+				</div>
+			</div> -->
+	
+	<!-- ==========设置显示第三行列表================================================================= -->
+			<!-- <br>
+			<hr >
+			<div class="box" style="width: 98%; margin: auto;">
+				<div class="row mb-3">
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-primary">World</strong>
+						  <h3 class="mb-0">Featured post</h3>
+						  <div class="mb-1 text-muted">Nov 12</div>
+						  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+						  <a href="#" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						</div>
+					  </div>
+					</div>
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-success">Design</strong>
+						  <h3 class="mb-0">Post title</h3>
+						  <div class="mb-1 text-muted">Nov 11</div>
+						  <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+						  <a href="#" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						</div>
+					  </div>
+					</div>
+					<div class="col-md-4">
+					  <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+						<div class="col p-4 d-flex flex-column position-static">
+						  <strong class="d-inline-block mb-2 text-primary">World</strong>
+						  <h3 class="mb-0">Featured post</h3>
+						  <div class="mb-1 text-muted">Nov 12</div>
+						  <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+						  <a href="#" class="stretched-link">Continue reading</a>
+						</div>
+						<div class="col-auto d-none d-lg-block">
+						  <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: Thumbnail"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+						</div>
+					  </div>
+					</div>
+				</div>
+			</div> -->
+	
+	
+			<!-- FOOTER -->
+			<!-- <footer class="container">
+				<p class="float-right"><a href="#">Back to top</a></p>
+				<p>&copy; 2017-2019 Company, Inc. &middot; <a href="#">Privacy</a> &middot; <a href="#">Terms</a></p>
+			</footer> -->
+		</main>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		 crossorigin="anonymous"></script>
+		<script>
+			window.jQuery || document.write('<script src="/docs/4.3/assets/js/vendor/jquery-slim.min.js"><\/script>')
+		</script>
+		<script src="js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

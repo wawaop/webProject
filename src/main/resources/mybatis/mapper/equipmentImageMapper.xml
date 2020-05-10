@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.guet.graduation.cfq.dao.EquipmentImageMapper">
+
+	<!-- public void insertEquipmentImage(EquipmentImage equipmentImage); -->
+	<insert id="insertEquipmentImage" parameterType="com.guet.graduation.cfq.entity.EquipmentImage">
+		INSERT INTO equipment_image (equipment_id, image_url)
+		VALUES (#{equipment_id}, #{image_url})
+	</insert>
+	
+	<!-- public String getImageUrlById(String equipmentId); -->
+	<select id="getImageUrlById" resultType="String" parameterType="String">
+		SELECT image_url from equipment_image  WHERE equipment_id=#{equipmentId} LIMIT 1;
+	</select>
+	
+	<!-- public List<EquipmentImage> gEquipmentImages(String equipmentId); -->
+	<select id="gEquipmentImages" resultType="com.guet.graduation.cfq.entity.EquipmentImage" parameterType="String">
+		SELECT * from equipment_image  WHERE equipment_id=#{equipmentId}
+	</select>
+	
+	<!-- public void deleteImageById(String imageId); -->
+	<delete id="deleteImageById" parameterType="String">
+		DELETE from equipment_image WHERE equipment_image.image_id=#{imageId}
+	</delete>
+
+</mapper>
